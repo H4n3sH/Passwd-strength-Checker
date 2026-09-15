@@ -1,0 +1,450 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>HN Secure | Password Strength Analyzer</title>
+
+    <meta
+        name="description"
+        content="HN Secure password strength analyzer. Analyze password strength locally in your browser."
+    >
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="app-shell">
+
+        <!-- Background decoration -->
+        <div class="bg-grid"></div>
+
+        <!-- Header -->
+        <header class="topbar">
+
+            <a href="#" class="brand" aria-label="HN Secure home">
+                <span class="brand-symbol">H△Ξ∞</span>
+                <span class="brand-name">HN <strong>Secure</strong></span>
+            </a>
+
+            <div class="header-status">
+                <span class="status-dot"></span>
+                <span>Local Security Lab</span>
+            </div>
+
+        </header>
+
+        <!-- Main -->
+        <main class="main-content">
+
+            <section class="hero">
+
+                <div class="eyebrow">
+                    <span class="eyebrow-line"></span>
+                    CYBERSECURITY TOOLKIT
+                </div>
+
+                <h1>
+                    Password
+                    <span>Strength Analyzer</span>
+                </h1>
+
+                <p class="hero-description">
+                    Test password strength, understand security weaknesses,
+                    and build stronger authentication habits.
+                </p>
+
+            </section>
+
+            <!-- Analyzer -->
+            <section class="analyzer-grid">
+
+                <!-- Password input card -->
+                <div class="panel password-panel">
+
+                    <div class="panel-heading">
+                        <div>
+                            <span class="panel-label">01 / INPUT</span>
+                            <h2>Analyze Password</h2>
+                        </div>
+
+                        <span class="panel-icon">⌘</span>
+                    </div>
+
+                    <label for="passwordInput" class="input-label">
+                        Enter your password
+                    </label>
+
+                    <div class="password-input-wrap">
+
+                        <input
+                            type="password"
+                            id="passwordInput"
+                            placeholder="Type a password..."
+                            autocomplete="off"
+                            spellcheck="false"
+                            maxlength="256"
+                            aria-describedby="privacyNote"
+                        >
+
+                        <button
+                            type="button"
+                            id="togglePassword"
+                            class="icon-button"
+                            aria-label="Show password"
+                            aria-pressed="false"
+                        >
+                            <span id="eyeIcon">◉</span>
+                        </button>
+
+                    </div>
+
+                    <div class="input-meta">
+                        <span id="characterCount">0 characters</span>
+                        <button
+                            type="button"
+                            id="clearPassword"
+                            class="text-button"
+                        >
+                            Clear
+                        </button>
+                    </div>
+
+                    <div class="privacy-note" id="privacyNote">
+                        <span class="privacy-icon">◆</span>
+                        <span>
+                            Your password is analyzed locally in this browser.
+                            It is not sent to a server by this app.
+                        </span>
+                    </div>
+
+                    <div class="divider"></div>
+
+                    <div class="panel-heading small-heading">
+                        <div>
+                            <span class="panel-label">02 / ANALYSIS</span>
+                            <h2>Password Requirements</h2>
+                        </div>
+                    </div>
+
+                    <div class="requirements" id="requirements">
+
+                        <div class="requirement" data-rule="length">
+                            <span class="requirement-icon">○</span>
+                            <span>At least 12 characters</span>
+                        </div>
+
+                        <div class="requirement" data-rule="long">
+                            <span class="requirement-icon">○</span>
+                            <span>At least 16 characters</span>
+                        </div>
+
+                        <div class="requirement" data-rule="lower">
+                            <span class="requirement-icon">○</span>
+                            <span>Lowercase letters</span>
+                        </div>
+
+                        <div class="requirement" data-rule="upper">
+                            <span class="requirement-icon">○</span>
+                            <span>Uppercase letters</span>
+                        </div>
+
+                        <div class="requirement" data-rule="number">
+                            <span class="requirement-icon">○</span>
+                            <span>Numbers</span>
+                        </div>
+
+                        <div class="requirement" data-rule="symbol">
+                            <span class="requirement-icon">○</span>
+                            <span>Special characters</span>
+                        </div>
+
+                    </div>
+
+                    <button
+                        type="button"
+                        class="primary-button"
+                        id="generateButton"
+                    >
+                        <span>✦</span>
+                        Generate Strong Password
+                        <span class="button-arrow">↗</span>
+                    </button>
+
+                </div>
+
+                <!-- Strength card -->
+                <div class="panel strength-panel">
+
+                    <div class="panel-heading">
+                        <div>
+                            <span class="panel-label">03 / VERDICT</span>
+                            <h2>Security Assessment</h2>
+                        </div>
+
+                        <span class="shield-icon">⬡</span>
+                    </div>
+
+                    <div class="strength-display">
+
+                        <div class="strength-topline">
+                            <span class="strength-caption">
+                                CURRENT STRENGTH
+                            </span>
+
+                            <span class="live-badge">
+                                <span class="status-dot"></span>
+                                LIVE
+                            </span>
+                        </div>
+
+                        <div
+                            class="strength-name"
+                            id="strengthName"
+                            aria-live="polite"
+                        >
+                            No Password
+                        </div>
+
+                        <p class="strength-message" id="strengthMessage">
+                            Enter a password to begin your security analysis.
+                        </p>
+
+                        <div class="meter-container">
+
+                            <div
+                                class="meter-track"
+                                role="progressbar"
+                                aria-label="Password strength"
+                                aria-valuemin="0"
+                                aria-valuemax="100"
+                                aria-valuenow="0"
+                                id="strengthMeter"
+                            >
+                                <div
+                                    class="meter-fill"
+                                    id="meterFill"
+                                ></div>
+                            </div>
+
+                            <div class="meter-labels">
+                                <span>WEAK</span>
+                                <span>STRONG</span>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="score-grid">
+
+                        <div class="metric-card">
+                            <span class="metric-label">SECURITY SCORE</span>
+                            <div class="metric-value">
+                                <span id="scoreValue">0</span>
+                                <span class="metric-unit">/100</span>
+                            </div>
+                        </div>
+
+                        <div class="metric-card">
+                            <span class="metric-label">LENGTH</span>
+                            <div class="metric-value">
+                                <span id="lengthValue">0</span>
+                                <span class="metric-unit">chars</span>
+                            </div>
+                        </div>
+
+                        <div class="metric-card">
+                            <span class="metric-label">ENTROPY EST.</span>
+                            <div class="metric-value">
+                                <span id="entropyValue">0</span>
+                                <span class="metric-unit">bits</span>
+                            </div>
+                        </div>
+
+                        <div class="metric-card">
+                            <span class="metric-label">CHARACTER SET</span>
+                            <div class="metric-value metric-text" id="charsetValue">
+                                —
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="divider"></div>
+
+                    <div class="panel-heading small-heading">
+                        <div>
+                            <span class="panel-label">04 / FINDINGS</span>
+                            <h2>Security Recommendations</h2>
+                        </div>
+                    </div>
+
+                    <div
+                        class="recommendations"
+                        id="recommendations"
+                        aria-live="polite"
+                    >
+                        <div class="empty-recommendation">
+                            <span>◈</span>
+                            <p>Your recommendations will appear here.</p>
+                        </div>
+                    </div>
+
+                </div>
+
+            </section>
+
+            <!-- Educational information -->
+            <section class="info-grid">
+
+                <div class="info-card">
+                    <span class="info-number">01</span>
+                    <h3>Length matters</h3>
+                    <p>
+                        Longer passwords and passphrases can be harder
+                        to guess. Prefer unique passwords of at least
+                        12–16 characters where practical.
+                    </p>
+                </div>
+
+                <div class="info-card">
+                    <span class="info-number">02</span>
+                    <h3>Use unique passwords</h3>
+                    <p>
+                        A password reused across websites can expose
+                        multiple accounts if one service is breached.
+                    </p>
+                </div>
+
+                <div class="info-card">
+                    <span class="info-number">03</span>
+                    <h3>Use a password manager</h3>
+                    <p>
+                        A password manager can generate and store
+                        strong, unique passwords for your accounts.
+                    </p>
+                </div>
+
+            </section>
+
+            <!-- Footer -->
+            <footer class="footer">
+
+                <div class="footer-brand">
+                    <span class="brand-symbol small-symbol">H△Ξ∞</span>
+                    <span>HN Secure</span>
+                </div>
+
+                <p>
+                    Built for cybersecurity learning & awareness.
+                </p>
+
+                <p class="footer-note">
+                    This tool provides an educational estimate,
+                    not a guarantee of password security.
+                </p>
+
+            </footer>
+
+        </main>
+
+    </div>
+
+    <!-- Modal for generated password -->
+    <div
+        class="modal-overlay"
+        id="generatorModal"
+        hidden
+    >
+
+        <div
+            class="modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="modalTitle"
+        >
+
+            <button
+                type="button"
+                class="modal-close"
+                id="closeModal"
+                aria-label="Close generator"
+            >
+                ×
+            </button>
+
+            <span class="modal-eyebrow">SECURE GENERATOR</span>
+
+            <h2 id="modalTitle">Generated Password</h2>
+
+            <p class="modal-description">
+                A random password generated using your browser's
+                cryptographically secure random number generator.
+            </p>
+
+            <div class="generated-password-box">
+                <code id="generatedPassword"></code>
+
+                <button
+                    type="button"
+                    class="copy-button"
+                    id="copyGenerated"
+                >
+                    Copy
+                </button>
+            </div>
+
+            <div class="generator-options">
+
+                <label for="passwordLength">
+                    Password length:
+                    <strong id="passwordLengthLabel">20</strong>
+                </label>
+
+                <input
+                    type="range"
+                    id="passwordLength"
+                    min="12"
+                    max="64"
+                    value="20"
+                >
+
+            </div>
+
+            <div class="modal-actions">
+
+                <button
+                    type="button"
+                    class="secondary-button"
+                    id="regenerateButton"
+                >
+                    ↻ Regenerate
+                </button>
+
+                <button
+                    type="button"
+                    class="primary-button modal-use-button"
+                    id="useGenerated"
+                >
+                    Use Password ↗
+                </button>
+
+            </div>
+
+            <p class="modal-note">
+                For real accounts, store generated passwords in
+                a trusted password manager.
+            </p>
+
+        </div>
+
+    </div>
+
+    <script src="script.js"></script>
+
+</body>
+</html>
